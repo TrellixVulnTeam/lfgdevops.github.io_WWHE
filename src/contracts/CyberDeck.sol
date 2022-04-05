@@ -4,25 +4,24 @@ import "@openzeppelin/contracts/token/ERC721/IERC721.sol";
 import "@openzeppelin/contracts/utils/Strings.sol";
 
 interface IURIRouter {
-    function tokenURI() external view returns (string memory);
+    function tokenURI(uint256 tokenId) external view returns (string memory);
 }
 
 contract CyberDeck is ERC721PresetMinterPauserAutoId {
     using Strings for uint256;
-    uint256 public price = .12 ether; // start at 0.128ETH
+    uint256 public price = .12 ether;
     bool hasMaxSupply = false;
     uint256 maxSupply = 0;
     address payable treasury;
     IURIRouter uriRouter;
-
-    bool paused = true;
 
     struct ParentNFT {
         address tokenAddress;
         uint256 tokenId;
     }
 
-    string URIRoot = "ipfs://QmTn58CWyNHmyVxtwaVU5NKE1t2BNDWr1cWDTMA9Mn8KrP/";
+    string URIRoot =
+        "ipfs://Qmb4ApbzaijNt71SZn3rNaiaFdtEkFMScyiBP2tr2vz6tc/default.json";
 
     mapping(uint256 => ParentNFT) public parentNfts;
     mapping(address => mapping(uint256 => bool)) mintedStatus;
@@ -78,10 +77,26 @@ contract CyberDeck is ERC721PresetMinterPauserAutoId {
         );
         uint256 currentID = _tokenIds.current();
         _createParentNFT(_parentTokenAddress, _parentTokenId, currentID);
+        mintedStatus[_parentTokenAddress][_parentTokenId] = true;
         _mint(msg.sender, currentID);
         _tokenIds.increment();
         //TODO: pay guys
         payGuys();
+    }
+
+    function tokenURI(uint256 tokenId)
+        public
+        view
+        virtual
+        override
+        returns (string memory)
+    {
+        require(
+            _exists(tokenId),
+            "ERC721Metadata: URI query for nonexistent token"
+        );
+
+        return uriRouter.tokenURI(tokenId);
     }
 
     function setAllowedNft(address _nftAddress, bool allowed) public {
@@ -114,6 +129,14 @@ contract CyberDeck is ERC721PresetMinterPauserAutoId {
             "You don't have permission to do this."
         );
         URIRoot = _u;
+    }
+
+    function setPrice(uint256 _p) public {
+        require(
+            hasRole(DEFAULT_ADMIN_ROLE, _msgSender()),
+            "You don't have permission to do this."
+        );
+        price = _p;
     }
 
     function setMaxSupply(bool _hasMaxSupply, uint256 _maxSupply) public {

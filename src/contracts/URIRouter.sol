@@ -7,7 +7,7 @@ contract URIRouter is AccessControlEnumerable {
     mapping(address => string) ipfsURIRoots; // ipfs://a1b2c3d4/
     CyberDeck cyberDeck;
     string defaultURI =
-        "ipfs://QmTn58CWyNHmyVxtwaVU5NKE1t2BNDWr1cWDTMA9Mn8KrP/default.json";
+        "ipfs://Qmb4ApbzaijNt71SZn3rNaiaFdtEkFMScyiBP2tr2vz6tc/default.json";
 
     constructor(address _cyberDeckAddress) {
         _setupRole(DEFAULT_ADMIN_ROLE, _msgSender());
