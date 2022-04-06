@@ -6,6 +6,50 @@
   height: 40vmin;
   pointer-events: none;
 }
+/* body {
+  background-color: #282c34 !important;
+} */
+
+body {
+  background-color: black !important;
+  background-image: radial-gradient(
+    rgba(0, 150, 0, 0.75),
+    black 120%
+  ) !important;
+  height: 100vh;
+  color: white;
+  font: 1.3rem Inconsolata, monospace;
+  text-shadow: 0 0 5px #c8c8c8;
+}
+body::after {
+  content: "" !important;
+  position: absolute !important;
+  top: 0 !important;
+  left: 0 !important;
+  width: 100vw !important;
+  height: 100vh !important;
+  background: repeating-linear-gradient(
+    rgba(0, 0, 0, 0.25),
+    rgba(0, 0, 0, 0.25) 1px,
+    transparent 1px,
+    transparent 2px
+  );
+  /* background: repeating-linear-gradient(
+    0deg,
+    rgba(black, 0.15),
+    rgba(black, 0.15) 1px,
+    transparent 1px,
+    transparent 2px
+  ) !important; */
+}
+
+::selection {
+  background: #0080ff;
+  text-shadow: none;
+}
+pre {
+  margin: 0;
+}
 
 @media (prefers-reduced-motion: no-preference) {
   .App-logo {
@@ -26,6 +70,59 @@
 
 .App-link {
   color: #61dafb;
+}
+
+/* tileset */
+
+.b-top-tile {
+  background-image: url("b-top-tile.png");
+  background-repeat: repeat-x;
+  background-size: contain;
+}
+
+.b-bottom-tile {
+  background-image: url("b-bottom-tile.png");
+  background-repeat: repeat-x;
+  background-size: contain;
+}
+
+.b-left-tile {
+  background-image: url("b-left-tile.png");
+  background-repeat: repeat-y;
+  background-size: contain;
+}
+.b-right-tile {
+  background-image: url("b-right-tile.png");
+  background-repeat: repeat-y;
+  background-size: contain;
+}
+
+.b-top-left-tile {
+  background-image: url("b-top-left-tile.png");
+  width: 12px;
+}
+
+.b-top-right-tile {
+  background-image: url("b-top-right-tile.png");
+}
+
+.b-bottom-left-tile {
+  background-image: url("b-bottom-left-tile.png");
+}
+
+.b-bottom-right-tile {
+  background-image: url("b-bottom-right-tile.png");
+}
+
+.panel-header-title {
+  font-weight: bold;
+  font-size: 42px;
+  color: white;
+}
+
+.panel-text {
+  font-weight: bold;
+  color: white;
 }
 
 @keyframes App-logo-spin {

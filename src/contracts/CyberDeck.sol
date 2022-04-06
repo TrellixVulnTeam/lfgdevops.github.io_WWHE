@@ -7,11 +7,15 @@ interface IURIRouter {
     function tokenURI(uint256 tokenId) external view returns (string memory);
 }
 
+interface INonStandardNFT {
+    function ownerOf(uint256 tokenId) external view returns (address);
+}
+
 contract CyberDeck is ERC721PresetMinterPauserAutoId {
     using Strings for uint256;
     uint256 public price = .12 ether;
-    bool hasMaxSupply = false;
-    uint256 maxSupply = 0;
+    bool public hasMaxSupply = false;
+    uint256 public maxSupply = 0;
     address payable treasury;
     IURIRouter uriRouter;
 
@@ -24,9 +28,11 @@ contract CyberDeck is ERC721PresetMinterPauserAutoId {
         "ipfs://Qmb4ApbzaijNt71SZn3rNaiaFdtEkFMScyiBP2tr2vz6tc/default.json";
 
     mapping(uint256 => ParentNFT) public parentNfts;
-    mapping(address => mapping(uint256 => bool)) mintedStatus;
-    mapping(address => bool) allowedNfts;
-    bool isExclusive = true;
+    mapping(address => mapping(uint256 => bool)) public mintedStatus;
+    mapping(address => bool) public allowedNfts;
+    bool public isExclusive = true;
+    mapping(address => bool) public standardStatus;
+    mapping(address => address) public nonStandardRouters;
 
     using Counters for Counters.Counter;
     Counters.Counter public _tokenIds;
@@ -66,11 +72,19 @@ contract CyberDeck is ERC721PresetMinterPauserAutoId {
 
         require(msg.value >= price, "Insufficient Funds");
 
-        IERC721 _nft = IERC721(_parentTokenAddress);
-        require(
-            _nft.ownerOf(_parentTokenId) == msg.sender,
-            "You are not owner of this NFT"
-        );
+        if (standardStatus[_parentTokenAddress]) {
+            IERC721 _nft = IERC721(_parentTokenAddress);
+            require(
+                _nft.ownerOf(_parentTokenId) == msg.sender,
+                "You are not owner of this NFT"
+            );
+        } else {
+            require(
+                INonStandardNFT(nonStandardRouters[_parentTokenAddress])
+                    .ownerOf(_parentTokenId) == msg.sender,
+                "You are not owner of this NFT"
+            );
+        }
         require(
             !mintedStatus[_parentTokenAddress][_parentTokenId],
             "NFT has already been used to mint"
@@ -99,12 +113,21 @@ contract CyberDeck is ERC721PresetMinterPauserAutoId {
         return uriRouter.tokenURI(tokenId);
     }
 
-    function setAllowedNft(address _nftAddress, bool allowed) public {
+    function setAllowedNft(
+        address _nftAddress,
+        bool _allowed,
+        bool _standard,
+        address _nonStandardRouter
+    ) public {
         require(
             hasRole(DEFAULT_ADMIN_ROLE, _msgSender()),
             "You don't have permission to do this."
         );
-        allowedNfts[_nftAddress] = allowed;
+        allowedNfts[_nftAddress] = _allowed;
+        standardStatus[_nftAddress] = _standard;
+        if (!_standard) {
+            nonStandardRouters[_nftAddress] = _nonStandardRouter;
+        }
     }
 
     function setIsExclusive(bool _e) public {

@@ -53,5 +53,10 @@ module.exports = async function (deployer) {
   await cyberDeckResp.setURIRouter(routerResp.address);
   await sleep(5000);
 
-  await cyberDeckResp.setAllowedNft(f2Resp.address, true);
+  await cyberDeckResp.setAllowedNft(
+    f2Resp.address,
+    true,
+    true,
+    cyberDeckResp.address
+  );
 };
