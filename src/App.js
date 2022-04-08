@@ -230,7 +230,7 @@ function App() {
               supply,
             }}
           >
-            {!account ? (
+            {false ? (
               <>
                 <ConnectWalletScreen />
               </>
