@@ -7,7 +7,7 @@ import WhitePaperPre from "./WhitePaperPre";
 import WhitePaperSubtitle from "./WhitePaperSubtitle";
 import WhitePaperText from "./WhitePaperText";
 import WhitePaperTitle from "./WhitePaperTitle";
-import RoomScene from "../RoomScene/RoomScene";
+import ComputerModel from "../RoomScene/ComputerModel";
 
 const o = `              
     *((((((###         
@@ -141,7 +141,7 @@ export default function WhitePaperBody({}) {
           duration={duration}
           isPlaying={isPlaying}
         />
-        <RoomScene />
+        <ComputerModel />
         <WhitePaperText
           characters={wp["13-paragraph"]}
           revealDuration={revealDuration}

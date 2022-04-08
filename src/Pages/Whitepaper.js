@@ -1,4 +1,4 @@
-import RoomScene from "../components/RoomScene/RoomScene";
+import ComputerModel from "../components/RoomScene/ComputerModel";
 import WhitePaperBody from "../components/Whitepaper/WhitePaperBody";
 
 export default function Whitepaper({}) {
