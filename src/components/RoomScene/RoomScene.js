@@ -18,6 +18,8 @@ export default function RoomScene() {
         localScale={10}
         id={"room-scene"}
         clearColor={"#000000"}
+        isWireframe={true}
+        hasShadow={false}
       />
     </div>
   );

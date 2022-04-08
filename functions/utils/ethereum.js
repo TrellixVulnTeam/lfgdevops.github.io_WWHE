@@ -3,7 +3,7 @@ const CyberDeck = require("./abis/CyberDeck.json");
 const Verifier = require("./abis/Verifier.json");
 const ERC721 = require("./abis/ERC721.json");
 
-const network = "matic";
+const network = "homestead";
 const provider = new ethers.providers.InfuraProvider(network, {
   projectId: process.env.INFURA_PROJECT_ID,
   projectSecret: process.env.INFURA_PROJECT_SECRET,

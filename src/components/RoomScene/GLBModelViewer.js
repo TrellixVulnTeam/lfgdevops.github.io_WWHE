@@ -9,6 +9,8 @@ export default function GLBModelViewer({
   localScale,
   id,
   clearColor,
+  isWireframe,
+  hasShadow,
 }) {
   function setupModel(data) {
     const model = data.scene.children[0];
@@ -66,10 +68,14 @@ export default function GLBModelViewer({
       gltf.scene.rotation.y = 3.14159265358979323846264338327950288419;
       gltf.scene.traverse((n) => {
         if (n.isMesh) {
-          // n.castShadow = true;ß
-          // n.receiveShadow = true;
-          n.material.wireframe = true;
-          n.material.color.setHex(0xffffff);
+          if (hasShadow) {
+            n.castShadow = true;
+            n.receiveShadow = true;
+          }
+          if (isWireframe) {
+            n.material.wireframe = true;
+            n.material.color.setHex(0xffffff);
+          }
           if (n.material.map) {
             n.material.map.anisotropy = 16;
           }
