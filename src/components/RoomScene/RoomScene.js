@@ -11,32 +11,65 @@ import {
   Html,
 } from "@react-three/drei";
 import MyApp from "../../App2D";
+import Model from "./Lowpolyroom1";
+import StarterScreen from "../StarterScreen";
 
 export default function RoomScene() {
   return (
     <Suspense fallback={<div>loading...</div>}>
-      <Canvas shadows dpr={[4, 3]} camera={{ position: [0, 0.3, 1], fov: 50 }}>
+      <Canvas shadows dpr={[4, 3]} camera={{ position: [0, 0, 0], fov: 50 }}>
         <ambientLight intensity={0.5} />
-        {/* <spotLight
+        <spotLight
           position={[10, 10, 10]}
           angle={0.15}
           penumbra={1}
           shadow-mapSize={[512, 512]}
           castShadow
-        /> */}
+        />
         <PresentationControls
           global
           config={{ mass: 2, tension: 500 }}
           snap={{ mass: 4, tension: 1500 }}
-          rotation={[0, 0.29, 0]}
+          rotation={[0, 0, 0]}
           polar={[-Math.PI / 3, Math.PI / 3]}
           azimuth={[-Math.PI / 1.4, Math.PI / 2]}
         >
-          <Watch
-            rotation={[0, -Math.PI, 0]}
-            position={[0, 0.25, 0]}
-            scale={0.003}
-          />
+          {/* <Html
+            scale={0.0055}
+            rotation={[0, 0, 0]}
+            position={[-0.085, 0, -0.2]}
+            transform
+            occlude
+          >
+            <MyApp />
+          </Html> */}
+          <Html
+            scale={0.009}
+            rotation={[0, 0, 0]}
+            position={[-0.0695, 0.0375, -0.84]}
+            transform
+            occlude
+          >
+            <StarterScreen />
+          </Html>
+          <Html
+            scale={0.0036}
+            rotation={[0, -Math.PI / 16, 0]}
+            position={[0.114, 0.0115, -0.31]}
+            transform
+            occlude
+          >
+            <div style={{}}>
+              <iframe
+                src="https://opensea.io/explore-collections?tab=top"
+                title={"display"}
+                height={1000}
+                width={1000}
+              ></iframe>
+            </div>
+          </Html>
+          <Model position={[0.25, -0.6, 0]} castShadow={true} />
+          {/* <Watch rotation={[0, 0, 0]} position={[0.1, -0.2, 0]} scale={0.003} /> */}
         </PresentationControls>
         <ContactShadows
           rotation-x={Math.PI / 2}
@@ -57,7 +90,7 @@ function Watch(props) {
   const ref = useRef();
   const { scene } = useLoader(
     GLTFLoader,
-    "https://collectees.mypinata.cloud/ipfs/QmdSrNvEvJ3aaqidmJsgerMZNfDwXH4PazqicSvANXriSS/computer.glb"
+    "https://collectees.mypinata.cloud/ipfs/QmPj7tZRQrkbAish8c89hUYfXMzFWv33aguz3tuVWHhSLT/lowpolyroom1.glb"
   );
   // const { nodes, materials, scene } = useGLTF(
   //   "https://collectees.mypinata.cloud/ipfs/QmdSrNvEvJ3aaqidmJsgerMZNfDwXH4PazqicSvANXriSS/computer.glb"
@@ -90,7 +123,7 @@ function Watch(props) {
           </div>
         </Html>
       </mesh> */}
-      <primitive object={scene} scale={120} position={[0, -0, -0]}>
+      <primitive object={scene} scale={120} castShadow position={[0, -0, -0]}>
         <Html
           scale={0.0055}
           rotation={[0, Math.PI, 0]}
