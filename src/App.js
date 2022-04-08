@@ -20,6 +20,8 @@ import BootupScreen from "./components/BootupScreen";
 import { WidthContainer } from "./components/WidthContainer";
 import ConnectWalletScreen from "./components/ConnectWalletScreen";
 import useKeyPress from "./components/useKeyPress";
+import Whitepaper from "./Pages/Whitepaper";
+import TerminalScreen from "./components/TerminalScreen";
 
 function App() {
   const navigate = useNavigate();
@@ -215,41 +217,44 @@ function App() {
   }, [account]);
 
   return (
-    <div className="App">
-      <>
-        <Web3Context.Provider
-          value={{
-            account,
-            setAccount,
-            cyberDeck,
-            web3,
-            web3Handler,
-            supply,
-          }}
-        >
-          {!account ? (
-            <>
-              <ConnectWalletScreen />
-            </>
-          ) : (
-            <>
-              {!clearedBootup ? (
-                <BootupScreen
-                  isLoadingCyberdeck={isLoadingCyberdeck}
-                  isLoadingUserTokens={isLoadingUserTokens}
-                  isLoadingInitialData={isLoadingInitialData}
-                  account={account}
-                />
-              ) : (
-                <Routes>
-                  <Route path="/" element={<Home />} />
-                </Routes>
-              )}
-            </>
-          )}
-        </Web3Context.Provider>
-      </>
-    </div>
+    <TerminalScreen>
+      <div className="App">
+        <>
+          <Web3Context.Provider
+            value={{
+              account,
+              setAccount,
+              cyberDeck,
+              web3,
+              web3Handler,
+              supply,
+            }}
+          >
+            {!account ? (
+              <>
+                <ConnectWalletScreen />
+              </>
+            ) : (
+              <>
+                {!clearedBootup ? (
+                  <BootupScreen
+                    isLoadingCyberdeck={isLoadingCyberdeck}
+                    isLoadingUserTokens={isLoadingUserTokens}
+                    isLoadingInitialData={isLoadingInitialData}
+                    account={account}
+                  />
+                ) : (
+                  <Routes>
+                    <Route path="/" element={<Whitepaper />} />
+                    {/* <Route path="/" element={<Home />} /> */}
+                  </Routes>
+                )}
+              </>
+            )}
+          </Web3Context.Provider>
+        </>
+      </div>
+    </TerminalScreen>
   );
 }
 

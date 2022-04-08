@@ -1,16 +1,18 @@
 import { Center, Heading, Text } from "@chakra-ui/react";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import Panel from "../components/Panel";
 import { SunkenInput, SunkenTextArea } from "../components/SunkenInput";
 import { WidthContainer } from "../components/WidthContainer";
 import TypeAnimation from "react-type-animation";
 import useKeyPress from "../components/useKeyPress";
 import { useNavigate } from "react-router-dom";
+import { Web3Context } from "../contexts/Web3Context";
 
 export default function Home() {
   const navigate = useNavigate();
   const mKey = useKeyPress("m");
   const tKey = useKeyPress("t");
+  const { account } = useContext(Web3Context);
   const [tweetMessage, setTweetMessage] = useState("");
 
   useEffect(() => {
@@ -36,6 +38,8 @@ export default function Home() {
                 sequence={["LFG CyberDeck"]}
                 wrapper="h2"
               />
+              <TypeAnimation cursor={false} sequence={[account]} wrapper="p" />
+              <TypeAnimation cursor={false} sequence={[" "]} wrapper="p" />
               <TypeAnimation
                 cursor={false}
                 sequence={[500, "Commands: "]}
