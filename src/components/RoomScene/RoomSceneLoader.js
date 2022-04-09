@@ -3,7 +3,7 @@ import * as THREE from "three";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
 import { CSS3DObject } from "three/examples/jsm/renderers/CSS3DRenderer.js";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
-import MyApp from "../../App2D";
+import MyApp from "../../App";
 
 export default function RoomSceneLoader({
   glbUrl,

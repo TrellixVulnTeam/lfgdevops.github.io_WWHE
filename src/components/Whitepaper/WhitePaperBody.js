@@ -376,6 +376,67 @@ export default function WhitePaperBody({}) {
           duration={duration}
           isPlaying={isPlaying}
         />
+        <WhitePaperText
+          characters={wp["53-paragraph"]}
+          revealDuration={revealDuration}
+          duration={duration}
+          isPlaying={isPlaying}
+        />
+        <WhitePaperText
+          characters={wp["54-paragraph"]}
+          revealDuration={revealDuration}
+          duration={duration}
+          isPlaying={isPlaying}
+        />
+        <WhitePaperText
+          characters={wp["55-paragraph"]}
+          revealDuration={revealDuration}
+          duration={duration}
+          isPlaying={isPlaying}
+        />
+        <WhitePaperText
+          characters={wp["56-paragraph"]}
+          revealDuration={revealDuration}
+          duration={duration}
+          isPlaying={isPlaying}
+        />
+        <WhitePaperSubtitle
+          characters={wp["57-subtitle"]}
+          revealDuration={revealDuration}
+          duration={duration}
+          isPlaying={isPlaying}
+        />
+        <WhitePaperText
+          characters={wp["58-paragraph"]}
+          revealDuration={revealDuration}
+          duration={duration}
+          isPlaying={isPlaying}
+        />
+        <WhitePaperText
+          characters={wp["59-paragraph"]}
+          revealDuration={revealDuration}
+          duration={duration}
+          isPlaying={isPlaying}
+        />
+        <WhitePaperText
+          characters={wp["61-paragraph"]}
+          revealDuration={revealDuration}
+          duration={duration}
+          isPlaying={isPlaying}
+        />
+        <WhitePaperSubtitle
+          characters={wp["66-subtitle"]}
+          revealDuration={revealDuration}
+          duration={duration}
+          isPlaying={isPlaying}
+        />
+        <WhitePaperText
+          characters={wp["67-paragraph"]}
+          revealDuration={revealDuration}
+          duration={duration}
+          isPlaying={isPlaying}
+        />
+        <div style={{ padding: "84px" }}></div>
       </WidthContainer>
     </>
   );

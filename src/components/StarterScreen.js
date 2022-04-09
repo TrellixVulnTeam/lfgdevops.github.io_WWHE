@@ -1,10 +1,8 @@
+import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import useKeyPress from "./useKeyPress";
 
-export default function StarterScreen() {
-  const l = useKeyPress("l");
-  const f = useKeyPress("f");
-  const g = useKeyPress("g");
-
+export default function StarterScreen({ l, f, g }) {
   return (
     <div className="starter-screen">
       <div
@@ -18,7 +16,7 @@ export default function StarterScreen() {
         }}
       >
         <div style={{ fontSize: "188px", textAlign: "center" }}>
-          Lost Forgotten Gems
+          Legacy of Forgotten Gems
         </div>
         <div style={{ fontSize: "100px", padding: "24px" }}>
           Hold "LFG" to continue

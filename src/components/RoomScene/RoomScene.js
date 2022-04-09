@@ -1,4 +1,4 @@
-import { Suspense, useRef } from "react";
+import { Suspense, useEffect, useRef } from "react";
 import * as THREE from "three/src/Three";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
 
@@ -10,13 +10,25 @@ import {
   ContactShadows,
   Html,
 } from "@react-three/drei";
-import MyApp from "../../App2D";
+import MyApp from "../../App";
 import Model from "./Lowpolyroom1";
 import StarterScreen from "../StarterScreen";
+import useKeyPress from "../useKeyPress";
+import { useNavigate } from "react-router-dom";
 
 export default function RoomScene() {
+  const navigate = useNavigate();
+  const l = useKeyPress("l");
+  const f = useKeyPress("f");
+  const g = useKeyPress("g");
+
+  useEffect(() => {
+    if (l && f && g) {
+      navigate("/whitepaper");
+    }
+  }, [l, f, g]);
   return (
-    <Suspense fallback={<div>loading...</div>}>
+    <Suspense fallback={<div>:)</div>}>
       <Canvas shadows dpr={[4, 3]} camera={{ position: [0, 0, 0], fov: 50 }}>
         <ambientLight intensity={0.5} />
         <spotLight
@@ -50,7 +62,7 @@ export default function RoomScene() {
             transform
             occlude
           >
-            <StarterScreen />
+            <StarterScreen l={l} f={f} g={g} />
           </Html>
           <Html
             scale={0.0036}

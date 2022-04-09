@@ -188,7 +188,7 @@
 .terminal-screen {
   background-color: black !important;
   background-image: radial-gradient(
-    rgba(0, 62, 0, 0.75),
+    rgba(0, 149, 0, 0.75),
     black 120%
   ) !important;
   height: 100vh !important;
@@ -233,7 +233,7 @@
 .starter-screen {
   background-color: black !important;
   background-image: radial-gradient(
-    rgba(0, 62, 0, 0.75),
+    rgba(0, 149, 0, 0.75),
     black 120%
   ) !important;
   height: 1080px !important;
