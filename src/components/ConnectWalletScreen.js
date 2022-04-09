@@ -9,7 +9,6 @@ export default function ConnectWalletScreen() {
   const { account, setAccount, web3Handler } = useContext(Web3Context);
   useEffect(() => {
     if (keyPress) {
-      console.log("hi");
       web3Handler();
     }
   }, [keyPress]);

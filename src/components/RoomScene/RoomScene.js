@@ -31,13 +31,7 @@ export default function RoomScene() {
     <Suspense fallback={<div>:)</div>}>
       <Canvas shadows dpr={[4, 3]} camera={{ position: [0, 0, 0], fov: 50 }}>
         <ambientLight intensity={0.5} />
-        <spotLight
-          position={[10, 10, 10]}
-          angle={0.15}
-          penumbra={1}
-          shadow-mapSize={[512, 512]}
-          castShadow
-        />
+
         <PresentationControls
           global
           config={{ mass: 2, tension: 500 }}
@@ -46,6 +40,13 @@ export default function RoomScene() {
           polar={[-Math.PI / 3, Math.PI / 3]}
           azimuth={[-Math.PI / 1.4, Math.PI / 2]}
         >
+          <spotLight
+            position={[10, 10, 10]}
+            angle={0.15}
+            penumbra={1}
+            shadow-mapSize={[512 * 16, 512 * 16]}
+            castShadow
+          />
           {/* <Html
             scale={0.0055}
             rotation={[0, 0, 0]}

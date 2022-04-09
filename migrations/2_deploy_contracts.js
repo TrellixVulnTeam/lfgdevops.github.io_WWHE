@@ -40,7 +40,9 @@ module.exports = async function (deployer) {
   await sleep(5000);
   const f1Resp = await deployer.deploy(FakeNFT, "Fake1", "F1", "poo1");
   await sleep(5000);
-  const f2Resp = await deployer.deploy(FakeNFT, "Fake2", "F2", "poo2");
+  const f2Resp = await deployer.deploy(FakeNFT, "Ether Stone", "STONE", "poo2");
+  await sleep(5000);
+  const f3Resp = await deployer.deploy(FakeNFT, "Moon Rock", "MOON", "poo3");
   await sleep(5000);
 
   console.log(cyberDeckResp.address);
@@ -59,4 +61,19 @@ module.exports = async function (deployer) {
     true,
     cyberDeckResp.address
   );
+
+  await sleep(5000);
+
+  await cyberDeckResp.setAllowedNft(
+    f3Resp.address,
+    true,
+    true,
+    cyberDeckResp.address
+  );
+
+  await sleep(5000);
+
+  await f1Resp.buy({ from: "0xd343dD6424402845a27566f3b38CD0045BdeC27e" });
+  await f2Resp.buy({ from: "0xd343dD6424402845a27566f3b38CD0045BdeC27e" });
+  await f3Resp.buy({ from: "0xd343dD6424402845a27566f3b38CD0045BdeC27e" });
 };

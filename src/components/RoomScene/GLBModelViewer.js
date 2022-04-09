@@ -31,8 +31,7 @@ export default function GLBModelViewer({
     renderer.setPixelRatio(window.devicePixelRatio);
     renderer.setSize(size, size);
     var container = document.getElementById(id);
-    console.log("container");
-    console.log(container);
+
     container.appendChild(renderer.domElement);
 
     // Load the Orbitcontroller

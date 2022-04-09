@@ -25,6 +25,7 @@ import Whitepaper from "./Pages/Whitepaper";
 import TerminalScreen from "./components/TerminalScreen";
 import RoomSceneLoader from "./components/RoomScene/RoomSceneLoader";
 import App3D from "./App3D";
+import Mint from "./Pages/Mint";
 
 function App() {
   const navigate = useNavigate();
@@ -63,6 +64,33 @@ function App() {
   const [isLoadingUserTokens, setIsLoadingUserTokens] = useState(false);
   const [clearedBootup, setClearedBootup] = useState(false);
 
+  const mintNFTHandler = async ({ tokenAddress, tokenId }) => {
+    // Mint NFT
+    if (cyberDeck) {
+      setIsMinting(true);
+      setIsError(false);
+      const price = await cyberDeck.methods.price().call();
+
+      await cyberDeck.methods
+        .buy(tokenAddress, tokenId)
+        .send({
+          from: account,
+          value: parseInt(price.toString()).toString(),
+        })
+        .on("receipt", async () => {
+          try {
+            await loadBlockchainData();
+          } catch (e) {}
+        })
+        .on("error", (error) => {
+          window.alert(error.message.toString());
+          setIsError(true);
+        });
+    }
+
+    setIsMinting(false);
+  };
+
   async function getParentNft({ _account, _index, _cyberDeck }) {
     try {
       const tokenId = await _cyberDeck.methods
@@ -98,8 +126,7 @@ function App() {
   }
   async function getOwnedTokens({ _account, _cyberDeck }) {
     const _balanceOf = await _cyberDeck.methods.balanceOf(_account).call();
-    console.log("BALANCE OF: ", _balanceOf);
-    setBalanceOf(_balanceOf);
+
     let tokenPromises = [];
     for (let i = 0; i < _balanceOf; i++) {
       tokenPromises.push(
@@ -113,11 +140,9 @@ function App() {
         c && !c.error && c.parentTokenOwner.toString() === _account.toString()
     );
     setOwnedTokens(ot);
-    console.log("owned tokens: ", ot);
   }
 
   useEffect(() => {
-    console.log(clearKeyPress);
     if (clearKeyPress && !isLoadingInitialData) {
       setClearedBootup(true);
     }
@@ -132,6 +157,13 @@ function App() {
       setCurrentNetwork(networkId);
 
       try {
+        if (
+          !CyberDeck.networks[networkId] ||
+          !CyberDeck.networks[networkId].address
+        ) {
+          window.alert("Please Connect to the Ethereum Mainnet");
+          return;
+        }
         const cyberDeck = new web3.eth.Contract(
           CyberDeck.abi,
           CyberDeck.networks[networkId].address
@@ -159,7 +191,6 @@ function App() {
         }
 
         if (account) {
-          console.log("ACOUNT");
           setIsLoadingUserTokens(true);
           await getOwnedTokens({ _account: account, _cyberDeck: cyberDeck });
         }
@@ -167,7 +198,6 @@ function App() {
         // setIsLoadingCyberdeck(false);
         // setIsLoadingUserTokens(false);
       } catch (error) {
-        console.log(error);
         setIsError(true);
         setMessage(
           "Contract not deployed to current network, please change network in MetaMask"
@@ -176,7 +206,6 @@ function App() {
     }
   };
   const loadWeb3 = async () => {
-    console.log("load web 3");
     if (typeof window.ethereum !== "undefined" && !account) {
       const web3 = new Web3(window.ethereum, {
         transactionConfirmationBlocks: 1,
@@ -215,7 +244,6 @@ function App() {
   };
 
   useEffect(() => {
-    console.log("acccount: ", account);
     loadWeb3();
     loadBlockchainData();
   }, [account]);
@@ -231,6 +259,8 @@ function App() {
             web3,
             web3Handler,
             supply,
+            mintNFTHandler,
+            ownedAllowedNfts,
           }}
         >
           {false ? (
@@ -257,6 +287,22 @@ function App() {
                     element={
                       <TerminalScreen>
                         <Whitepaper />
+                      </TerminalScreen>
+                    }
+                  />
+                  <Route
+                    path="/home"
+                    element={
+                      <TerminalScreen>
+                        <Home />
+                      </TerminalScreen>
+                    }
+                  />
+                  <Route
+                    path="/mint"
+                    element={
+                      <TerminalScreen>
+                        <Mint />
                       </TerminalScreen>
                     }
                   />

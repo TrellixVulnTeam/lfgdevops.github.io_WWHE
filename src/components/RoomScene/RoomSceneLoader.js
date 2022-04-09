@@ -34,8 +34,7 @@ export default function RoomSceneLoader({
     renderer.setPixelRatio(window.devicePixelRatio);
     renderer.setSize(size, size);
     var container = document.getElementById(id);
-    console.log("container");
-    console.log(container);
+
     container.appendChild(renderer.domElement);
 
     // var object = new CSS3DObject(<MyApp />);
