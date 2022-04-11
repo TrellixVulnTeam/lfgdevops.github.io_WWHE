@@ -74,7 +74,7 @@ export default function RoomScene() {
           >
             <div style={{}}>
               <iframe
-                src="https://coinmarketcap.com/"
+                src="https://opensea.io/explore-collections?tab=top"
                 title={"display"}
                 height={1000}
                 width={1000}
