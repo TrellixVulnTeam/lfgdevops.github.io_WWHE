@@ -27,6 +27,12 @@ import RoomSceneLoader from "./components/RoomScene/RoomSceneLoader";
 import App3D from "./App3D";
 import Mint from "./Pages/Mint";
 import errorParser from "./utils/errorParser";
+import {
+  BrowserView,
+  MobileView,
+  isBrowser,
+  isMobile,
+} from "react-device-detect";
 
 const allNFTS = [
   "0x614e92021a82240bc73AB61e899FA75d91087964",
@@ -212,6 +218,12 @@ function App() {
     }
   }, [clearKeyPress]);
 
+  function clearMobileBootup() {
+    if (isMobile && !isLoadingInitialData) {
+      setClearedBootup(true);
+    }
+  }
+
   const loadBlockchainData = async (_clearedBootup) => {
     // Fetch Contract, Data, etc.
     if (web3) {
@@ -340,7 +352,7 @@ function App() {
           ) : (
             <>
               {!clearedBootup && location.pathname.length > 1 ? (
-                <TerminalScreen>
+                <TerminalScreen onClick={clearMobileBootup}>
                   <BootupScreen
                     isLoadingCyberdeck={isLoadingCyberdeck}
                     isLoadingUserTokens={isLoadingUserTokens}
@@ -374,7 +386,18 @@ function App() {
                       </TerminalScreen>
                     }
                   />
-                  <Route path="/" element={<App3D />} />
+                  <Route
+                    path="/"
+                    element={
+                      isBrowser ? (
+                        <App3D />
+                      ) : (
+                        <TerminalScreen>
+                          <Whitepaper />
+                        </TerminalScreen>
+                      )
+                    }
+                  />
                 </Routes>
               )}
             </>
