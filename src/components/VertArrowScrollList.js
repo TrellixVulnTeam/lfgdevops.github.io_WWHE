@@ -83,7 +83,7 @@ export default function VertArrowScrollList({
       <div>...</div>
       {[...biteSized].map((element, index) => (
         <ListItemComponent
-          key={element.toString()}
+          key={element.address + element.tokenId}
           index={((selected + items.length + index) % items.length) + 1}
           item={element}
           selected={index === 1}

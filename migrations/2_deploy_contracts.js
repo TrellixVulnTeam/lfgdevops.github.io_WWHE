@@ -74,6 +74,22 @@ module.exports = async function (deployer) {
   await sleep(5000);
 
   await f1Resp.buy({ from: "0xd343dD6424402845a27566f3b38CD0045BdeC27e" });
+  await sleep(5000);
+
   await f2Resp.buy({ from: "0xd343dD6424402845a27566f3b38CD0045BdeC27e" });
+  await sleep(5000);
+
   await f3Resp.buy({ from: "0xd343dD6424402845a27566f3b38CD0045BdeC27e" });
+  await sleep(5000);
+
+  await f1Resp.buy({ from: "0xd343dD6424402845a27566f3b38CD0045BdeC27e" });
+  await sleep(5000);
+
+  await f2Resp.buy({ from: "0xd343dD6424402845a27566f3b38CD0045BdeC27e" });
+  await sleep(5000);
+
+  await f3Resp.buy({ from: "0xd343dD6424402845a27566f3b38CD0045BdeC27e" });
+  console.log(f1Resp.address);
+  console.log(f2Resp.address);
+  console.log(f3Resp.address);
 };

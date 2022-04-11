@@ -26,6 +26,13 @@ import TerminalScreen from "./components/TerminalScreen";
 import RoomSceneLoader from "./components/RoomScene/RoomSceneLoader";
 import App3D from "./App3D";
 import Mint from "./Pages/Mint";
+import errorParser from "./utils/errorParser";
+
+const allNFTS = [
+  "0x614e92021a82240bc73AB61e899FA75d91087964",
+  "0x55B2431d6Aa7AD9A726f652305f21314d636A9c6",
+  "0xa74C87459c8B03aB5234B4CcdD743e53DAd34f3C",
+];
 
 function App() {
   const navigate = useNavigate();
@@ -79,11 +86,16 @@ function App() {
         })
         .on("receipt", async () => {
           try {
-            await loadBlockchainData();
+            await loadBlockchainData(true);
           } catch (e) {}
         })
         .on("error", (error) => {
-          window.alert(error.message.toString());
+          window.alert(
+            errorParser.parseError({
+              error: error.message.toString(),
+              errorSet: errorParser.cyberDeckErrors,
+            })
+          );
           setIsError(true);
         });
     }
@@ -124,6 +136,55 @@ function App() {
       return resp;
     }
   }
+
+  async function getNftAndMetadata({}) {}
+
+  async function getAllowedNFT({ nftAddress, _account }) {
+    try {
+      const nftContract = new web3.eth.Contract(FakeNFT.abi, nftAddress);
+      const _bo = await nftContract.methods.balanceOf(_account).call();
+      let otp = [];
+      const [name, symbol] = await Promise.all([
+        nftContract.methods.name().call(),
+        nftContract.methods.symbol().call(),
+      ]);
+      if (_bo < 1) {
+        return [];
+      }
+
+      for (let i = 0; i < _bo; i++) {
+        otp.push(nftContract.methods.tokenOfOwnerByIndex(_account, i).call());
+      }
+
+      const tIds = await Promise.all(otp);
+      let twd = [];
+      for (const id of tIds) {
+        twd.push({
+          name: name,
+          symbol: symbol,
+          address: nftAddress,
+          tokenId: id,
+        });
+      }
+      return twd;
+    } catch (e) {
+      return [];
+    }
+  }
+
+  async function getAllAllowedNFTs({ _account }) {
+    let ap = [];
+    for (const a of allNFTS) {
+      ap.push(getAllowedNFT({ nftAddress: a, _account: _account }));
+    }
+
+    const al = await Promise.all(ap);
+    let allEm = [];
+    for (const l of al) {
+      allEm = [...allEm, ...l];
+    }
+    setOwnedAllowedNfts(allEm);
+  }
   async function getOwnedTokens({ _account, _cyberDeck }) {
     const _balanceOf = await _cyberDeck.methods.balanceOf(_account).call();
 
@@ -136,8 +197,11 @@ function App() {
 
     let ot = await Promise.all(tokenPromises);
     ot = ot.filter(
-      (c) =>
-        c && !c.error && c.parentTokenOwner.toString() === _account.toString()
+      ({ tokenData }) =>
+        tokenData &&
+        !tokenData.error &&
+        tokenData.parentTokenOwner &&
+        tokenData.parentTokenOwner.toString() === _account.toString()
     );
     setOwnedTokens(ot);
   }
@@ -148,10 +212,10 @@ function App() {
     }
   }, [clearKeyPress]);
 
-  const loadBlockchainData = async () => {
+  const loadBlockchainData = async (_clearedBootup) => {
     // Fetch Contract, Data, etc.
     if (web3) {
-      setClearedBootup(false);
+      setClearedBootup(_clearedBootup);
       setIsLoadingInitialData(true);
       const networkId = await web3.eth.net.getId();
       setCurrentNetwork(networkId);
@@ -192,6 +256,7 @@ function App() {
 
         if (account) {
           setIsLoadingUserTokens(true);
+          await getAllAllowedNFTs({ _account: account });
           await getOwnedTokens({ _account: account, _cyberDeck: cyberDeck });
         }
         setIsLoadingInitialData(false);
@@ -245,7 +310,7 @@ function App() {
 
   useEffect(() => {
     loadWeb3();
-    loadBlockchainData();
+    loadBlockchainData(false);
   }, [account]);
 
   return (
@@ -261,6 +326,7 @@ function App() {
             supply,
             mintNFTHandler,
             ownedAllowedNfts,
+            ownedTokens,
           }}
         >
           {false ? (
