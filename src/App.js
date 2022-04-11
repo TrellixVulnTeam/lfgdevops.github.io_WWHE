@@ -225,7 +225,7 @@ function App() {
           !CyberDeck.networks[networkId] ||
           !CyberDeck.networks[networkId].address
         ) {
-          window.alert("Please Connect to the Ethereum Mainnet");
+          // window.alert("Please Connect to the Ethereum Mainnet");
           return;
         }
         const cyberDeck = new web3.eth.Contract(
