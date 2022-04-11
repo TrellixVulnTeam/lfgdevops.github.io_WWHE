@@ -225,6 +225,8 @@ function App() {
           !CyberDeck.networks[networkId] ||
           !CyberDeck.networks[networkId].address
         ) {
+          setIsLoadingInitialData(false);
+
           // window.alert("Please Connect to the Ethereum Mainnet");
           return;
         }
